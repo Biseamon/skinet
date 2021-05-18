@@ -6,7 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using skinet.API.Helpers;
 using skinet.Core.Inferace;
+using skinet.Infrastructure.Data;
 using skinet.Infrastructure.Data.Migrations;
 
 namespace API
@@ -26,9 +28,13 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
+            //Adding repository pattern as a service that can be called anywhere in the app.
             services.AddScoped<IProductRepository, ProductRepository>();
+            //Adding generic repositories
+            services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
+            //AutoMapper service addition.
+            services.AddAutoMapper(typeof(MappingProfiles));
             services.AddDbContext<StoreContext>(x => x.UseSqlite(_configuration.GetConnectionString("DefaultConnection")));
             services.AddSwaggerGen(c =>
             {
@@ -49,6 +55,9 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            //making the app return images from the image folder in the wwwroot
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 
