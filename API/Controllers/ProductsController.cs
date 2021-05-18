@@ -3,16 +3,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Core.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using skinet.API.Controllers;
 using skinet.API.DTOs;
+using skinet.API.Errors;
 using skinet.Core.Inferace;
 using skinet.Core.Specification;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+    public class ProductsController : BaseApiController
     {
         private readonly IGenericRepository<Product> productRepo;
 
@@ -72,11 +73,15 @@ namespace API.Controllers
         // }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductToReturnDTO>> GetProduct(int id)
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
 
             var product = await this.productRepo.GetEntityWithSpec(spec);
+
+            if(product == null) return NotFound(new ApiResponse(404));
 
             return this.mapper.Map<Product, ProductToReturnDTO>(product);
             // return new ProductToReturnDTO()
