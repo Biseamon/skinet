@@ -8,7 +8,7 @@ namespace skinet.Core.Specification
         : base(x => 
                (string.IsNullOrEmpty(productSpecs.Search) || x.Name.ToLower().Contains(productSpecs.Search)) && 
                (!productSpecs.BrandId.HasValue || x.ProductBrandId == productSpecs.BrandId) && 
-                !productSpecs.TypeId.HasValue || x.ProductTypeId == productSpecs.TypeId)
+                (!productSpecs.TypeId.HasValue || x.ProductTypeId == productSpecs.TypeId))
         {
         }
     }
