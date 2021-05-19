@@ -10,3 +10,24 @@
     color: aliceblue;
     right: 32px;
 }
+
+a {
+    text-decoration: dashed;
+    color: #343a40;
+
+    &:active {
+        color: orange;
+    }
+}
+
+a:active {
+    color: orange;
+}
+
+.logo {
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+    }
+}
