@@ -1,12 +1,15 @@
 <!-- <ul>
     <li class="list-dash-unstyled" *ngFor="let product of products">{{ product.name }}</li>
 </ul> -->
-<div class="container">
+<div class="container mt-5">
     <div class="row">
 
         <section class="col-3">
 
-            <h5 class="text-danger ml-3">Sort</h5>
+          <ng-container *ngIf="types && brands">
+          
+
+            <h5 class="text-danger ml-3 mb-4">Sort</h5>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="inputGroupSelect01">Sort</label>
@@ -35,7 +38,7 @@
                 (click)="onTypesSelected(type.id)"
                 >{{type.name}}</li>
               </ul>
-              
+            </ng-container>
         </section>
 
         <section class="col-9">
@@ -48,7 +51,7 @@
                 [pageNumber]="this.shopParams.pageNumber"
                 ></app-paging-header>
 
-                <div class="form-inline mt-2">
+                <div class="form-inline" *ngIf="products">
                     <div class="input-group">
                         <input (keyup.enter)="onSearch()" type="text" class="form-control mr-2" #search style="width: 300px;" placeholder="Search" aria-label="" aria-describedby="">
                         <div class="input-group-append" id="button-addon4">
