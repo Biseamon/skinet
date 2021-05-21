@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using skinet.API.Extensions;
 using skinet.API.Helpers;
 using skinet.API.Middleware;
+using StackExchange.Redis;
 
 namespace API
 {
@@ -30,6 +31,14 @@ namespace API
             //AutoMapper service addition.
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddDbContext<StoreContext>(x => x.UseSqlite(_configuration.GetConnectionString("DefaultConnection")));
+
+            //Adding redis for our basket.
+            services.AddSingleton<IConnectionMultiplexer>(c =>
+            {
+                var configuration = ConfigurationOptions.Parse(_configuration.GetConnectionString("Redis"), true);
+                return ConnectionMultiplexer.Connect(configuration);
+            });
+           
             //Adding the IServiceExtension from Extensions folder.
             services.AddApplicationServices();
             services.AddSwaggerDocumentation();

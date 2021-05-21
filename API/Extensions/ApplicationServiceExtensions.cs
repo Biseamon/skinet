@@ -14,6 +14,8 @@ namespace skinet.API.Extensions
         {
             //Adding repository pattern as a service that can be called anywhere in the app.
             services.AddScoped<IProductRepository, ProductRepository>();
+            //Adding service as a service that enables Basket repository as a service.
+            services.AddScoped<IBasketRepository, BasketRepository>();
             //Adding generic repositories
             services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
 

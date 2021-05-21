@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Client",
+    "\\Client\\src",
+    "\\Client\\src\\app",
+    "\\Client\\src\\app\\core",
+    "\\Client\\src\\app\\core\\interceptor",
+    "\\Client\\src\\app\\core\\services",
+    "\\Client\\src\\app\\shared",
+    "\\Client\\src\\app\\shared\\components",
+    "\\Client\\src\\app\\shared\\components\\paging-header"
+  ],
+  "SelectedNode": "\\Client\\src\\app\\shared\\components\\paging-header\\paging-header.component.html",
+  "PreviewInSolutionExplorer": false
+}
