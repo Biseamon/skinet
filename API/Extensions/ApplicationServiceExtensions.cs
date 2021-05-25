@@ -5,6 +5,7 @@ using skinet.API.Errors;
 using skinet.Core.Inferace;
 using skinet.Infrastructure.Data;
 using skinet.Infrastructure.Data.Migrations;
+using skinet.Infrastructure.Services;
 
 namespace skinet.API.Extensions
 {
@@ -12,6 +13,8 @@ namespace skinet.API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            //JWT token
+            services.AddScoped<ITokenService, TokenService>();
             //Adding repository pattern as a service that can be called anywhere in the app.
             services.AddScoped<IProductRepository, ProductRepository>();
             //Adding service as a service that enables Basket repository as a service.

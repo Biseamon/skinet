@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using skinet.API.Extensions;
 using skinet.API.Helpers;
 using skinet.API.Middleware;
+using skinet.Infrastructure.Identity;
 using StackExchange.Redis;
 
 namespace API
@@ -32,6 +33,11 @@ namespace API
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddDbContext<StoreContext>(x => x.UseSqlite(_configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddDbContext<AppIdentityDbContext>(x => 
+            {
+                x.UseSqlite(_configuration.GetConnectionString("IdentityConnection"));
+            });
+
             //Adding redis for our basket.
             services.AddSingleton<IConnectionMultiplexer>(c =>
             {
@@ -41,6 +47,9 @@ namespace API
            
             //Adding the IServiceExtension from Extensions folder.
             services.AddApplicationServices();
+            //Adding the IServiceCollection extension for identity core.
+            services.AddIdentityServices(_configuration);
+
             services.AddSwaggerDocumentation();
             services.AddCors(opt =>
             {
@@ -72,6 +81,9 @@ namespace API
             app.UseStaticFiles();
 
             app.UseCors("CorsPolicy");
+
+            //JWT lesson
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
