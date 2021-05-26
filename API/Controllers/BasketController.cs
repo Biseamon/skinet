@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using skinet.API.DTOs;
 using skinet.Core.Entities;
 using skinet.Core.Inferace;
 
@@ -8,8 +10,10 @@ namespace skinet.API.Controllers
     public class BasketController : BaseApiController
     {
         private readonly IBasketRepository _basketRepository;
-        public BasketController(IBasketRepository basketRepository)
+        private readonly IMapper _mapper;
+        public BasketController(IBasketRepository basketRepository, IMapper mapper)
         {
+            _mapper = mapper;
             _basketRepository = basketRepository;
         }
 
@@ -22,11 +26,13 @@ namespace skinet.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CustomerBasket>> UpdateBasketId(CustomerBasket basket)
+        public async Task<ActionResult<CustomerBasket>> UpdateBasketId(CustomerBasketDTO basket)
         {
-            var updateBasket = await _basketRepository.UpdateBasketAsync(basket);
+            var customerBasket = _mapper.Map<CustomerBasketDTO, CustomerBasket>(basket);
 
-            return Ok(updateBasket);
+            var updatedBasket = await _basketRepository.UpdateBasketAsync(customerBasket);
+
+            return Ok(updatedBasket);
         }
 
         [HttpDelete]
