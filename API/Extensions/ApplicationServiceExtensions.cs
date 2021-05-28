@@ -1,4 +1,6 @@
 using System.Linq;
+using Core.Inferace;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using skinet.API.Errors;
@@ -15,6 +17,12 @@ namespace skinet.API.Extensions
         {
             //JWT token
             services.AddScoped<ITokenService, TokenService>();
+
+            //Order service.
+            services.AddScoped<IOrderService, OrderService>();
+
+            //Unit of work service.
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             //Adding repository pattern as a service that can be called anywhere in the app.
             services.AddScoped<IProductRepository, ProductRepository>();
             //Adding service as a service that enables Basket repository as a service.

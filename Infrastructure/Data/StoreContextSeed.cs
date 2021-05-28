@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Core.Entities;
 using Infrastructure.Data;
 using Microsoft.Extensions.Logging;
+using Core.Entities.OrderAggregate;
 
 namespace skinet.Infrastructure.Data
 {
@@ -57,6 +58,21 @@ namespace skinet.Infrastructure.Data
 
                     await context.SaveChangesAsync();
                 }
+
+                if(!context.DeliveryMethod.Any())
+                {
+                    var dmData = File.ReadAllText("../Infrastructure/Data/SeedData/delivery.json");
+
+                    var methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(dmData);
+
+                    foreach(var item in methods)
+                    {
+                        context.DeliveryMethod.Add(item);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+
             }catch(Exception ex)
             {
                 var logger = loggerFactory.CreateLogger<StoreContext>();
