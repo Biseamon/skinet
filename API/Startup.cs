@@ -67,7 +67,7 @@ namespace API
 
             // if (env.IsDevelopment())
             // {
-            //     //app.UseDeveloperExceptionPage();
+            //app.UseDeveloperExceptionPage();
                 
             // }
 
@@ -84,7 +84,6 @@ namespace API
 
             //JWT lesson
             app.UseAuthentication();
-
             app.UseAuthorization();
 
             app.UseSwaggerDocumentation();

@@ -21,6 +21,9 @@ namespace skinet.API.Extensions
             //Order service.
             services.AddScoped<IOrderService, OrderService>();
 
+            //Adding payment service
+            services.AddScoped<IPaymentService, PaymentService>();
+
             //Unit of work service.
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             //Adding repository pattern as a service that can be called anywhere in the app.
