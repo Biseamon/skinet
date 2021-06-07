@@ -8,14 +8,16 @@
 
           <ng-container *ngIf="types && brands">
           
-
             <h5 class="text-danger ml-3 mb-4">Sort</h5>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="inputGroupSelect01">Sort</label>
                 </div>
                 <select class="custom-select mr-2" id="inputGroupSelect01" (change)="onSortSelected($event.target.value)">
-                  <option *ngFor="let sort of sortOptions" [value]="sort.value">{{sort.name}}</option>
+                  <option *ngFor="let sort of sortOptions" 
+                  [value]="sort.value"
+                  [selected]="shopParams.sort === sort.value">
+                    {{sort.name}}</option>
                 </select>
               </div>
 
@@ -72,6 +74,7 @@
                 <app-pager 
                 [pageSize]="shopParams.pageSize"
                 [totalCount]="totalCount"
+                [pageNumber]="shopParams.pageNumber"
                 (pageChanged)="onPageChanged($event)"
                 >
                 </app-pager>

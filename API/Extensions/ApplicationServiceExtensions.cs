@@ -15,6 +15,8 @@ namespace skinet.API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            //Cache service
+            services.AddSingleton<IResponseCacheService, ResponseCacheService>();
             //JWT token
             services.AddScoped<ITokenService, TokenService>();
 

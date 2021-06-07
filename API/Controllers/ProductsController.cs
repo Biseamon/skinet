@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Helpers;
 using AutoMapper;
 using Core.Entities;
 using Microsoft.AspNetCore.Http;
@@ -48,6 +49,7 @@ namespace API.Controllers
         // }
 
         [HttpGet]
+        [Cached(600)]
         public async Task<ActionResult<Pagination<ProductToReturnDTO>>> GetProducts([FromQuery]ProductSpecsParams productParams)
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(productParams);
@@ -80,6 +82,7 @@ namespace API.Controllers
         // }
 
         [HttpGet("{id}")]
+        [Cached(600)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductToReturnDTO>> GetProduct(int id)
@@ -110,6 +113,7 @@ namespace API.Controllers
         // }
 
         [HttpGet("brands")]
+        [Cached(600)]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
         {
             return Ok(await this.productBrandRepo.ListAllAsync());
@@ -122,6 +126,7 @@ namespace API.Controllers
         // }
 
         [HttpGet("types")]
+        [Cached(600)]
         public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
         {
             return Ok(await this.productTypeRepo.ListAllAsync());
