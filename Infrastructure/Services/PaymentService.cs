@@ -3,10 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities.OrderAggregate;
 using Core.Inferace;
+using Core.Specification;
 using Microsoft.Extensions.Configuration;
 using skinet.Core.Entities;
 using skinet.Core.Inferace;
 using Stripe;
+using Order = Core.Entities.OrderAggregate.Order;
 using Product = Core.Entities.Product;
 
 namespace Infrastructure.Services
@@ -79,6 +81,40 @@ namespace Infrastructure.Services
             await this.basketRepository.UpdateBasketAsync(basket);
 
             return basket;
+        }
+
+        public async Task<Core.Entities.OrderAggregate.Order> UpdateOrderPaymentFailed(string paymentIntentId)
+        {
+           var spec = new OrderByPaymentIntentIdSpecification(paymentIntentId);
+           var order = await this.unitOfWork.Repository<Core.Entities.OrderAggregate.Order>().GetEntityWithSpec(spec);
+
+           if(order == null)
+           {
+               return null;
+           }
+
+           order.Status = OrderStatus.PaymentFailed;
+           await this.unitOfWork.Complete();
+
+           return order;
+        }
+
+        public async Task<Core.Entities.OrderAggregate.Order> UpdateOrderPaymentSucceeded(string paymentIntentId)
+        {
+           var spec = new OrderByPaymentIntentIdSpecification(paymentIntentId);
+           var order = await this.unitOfWork.Repository<Order>().GetEntityWithSpec(spec);
+
+           if(order == null)
+           {
+               return null;
+           }
+
+           order.Status = OrderStatus.PaymentReceived;
+           this.unitOfWork.Repository<Order>().Update(order);
+
+           await this.unitOfWork.Complete();
+
+           return order;
         }
     }
 }
