@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Core.Inferace;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using skinet.API.Controllers;
 using skinet.API.Errors;
@@ -16,12 +17,13 @@ namespace API.Controllers
     public class PaymentController : BaseApiController
     {
         private readonly IPaymentService paymentService;
-        private const string WhSecret = "whsec_K2Fh6aNdNxqEGmVziGthgt37NijLoYNS";
+        private readonly string WhSecret;
         public ILogger<PaymentController> Logger { get; }
-        public PaymentController(IPaymentService paymentService, ILogger<PaymentController> logger)
+        public PaymentController(IPaymentService paymentService, ILogger<PaymentController> logger, IConfiguration config)
         {
             this.Logger = logger;
             this.paymentService = paymentService;
+            this.WhSecret = config.GetSection("StripeSettings:WhSecret").Value;
         }
 
         [Authorize]

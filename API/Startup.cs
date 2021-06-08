@@ -1,9 +1,11 @@
+using System.IO;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using skinet.API.Extensions;
 using skinet.API.Helpers;
 using skinet.API.Middleware;
@@ -31,11 +33,11 @@ namespace API
             
             //AutoMapper service addition.
             services.AddAutoMapper(typeof(MappingProfiles));
-            services.AddDbContext<StoreContext>(x => x.UseSqlite(_configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<StoreContext>(x => x.UseNpgsql(_configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDbContext<AppIdentityDbContext>(x => 
             {
-                x.UseSqlite(_configuration.GetConnectionString("IdentityConnection"));
+                x.UseNpgsql(_configuration.GetConnectionString("IdentityConnection"));
             });
 
             //Adding redis for our basket.
@@ -77,8 +79,16 @@ namespace API
 
             app.UseRouting();
 
-            //making the app return images from the image folder in the wwwroot
+            //making the app return wwwroot
             app.UseStaticFiles();
+
+            //making the app to return images from the Content folder.
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "Content")
+                ), RequestPath = "/content"
+            });
 
             app.UseCors("CorsPolicy");
 
@@ -91,6 +101,7 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapFallbackToController("Index", "Fallback");
             });
         }
     }

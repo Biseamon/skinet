@@ -1,0 +1,29 @@
+{
+    "deploy.reloaded": {
+
+        "targets": [
+            {
+                "type": "sftp",
+                "name": "Linux",
+                "description": "SFTP folder",
+
+                "host": "188.166.170.48", "port": 22,
+                "user": "root", "password": "060422955Marin",
+
+                "dir": "/var/skinet",
+                "mappings": {
+                    "publish/**": "/"
+                }
+            }
+        ],
+        "packages": [
+            {
+                "name": "Version 2.3.4",
+                "description": "Package version 2.3.4",
+                "files": [
+                    "publish/**"
+                ],
+            }
+        ]
+    }
+}

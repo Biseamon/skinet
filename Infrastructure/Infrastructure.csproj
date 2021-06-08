@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <None Include="Data\SeedData\**" CopyToOutputDirectory="PreserveNewest" />
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.2" />
       <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.11.1" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
       <PackageReference Include="StackExchange.Redis" Version="2.0.601" />
       <PackageReference Include="Stripe.net" Version="39.50.0" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
